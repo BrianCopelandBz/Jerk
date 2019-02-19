@@ -61,7 +61,7 @@ body {
   color: #249AA7;
 }
 .thermometer--too-cold strong:before {
-  content: " too cold";
+  content: " not at all";
 }
 .thermometer--too-cold .liquid:before {
   background: #249AA7;
@@ -71,7 +71,7 @@ body {
   color: #B8E1F2;
 }
 .thermometer--cold strong:before {
-  content: " cold";
+  content: " tiny bit";
 }
 .thermometer--cold .liquid:before {
   background: #B8E1F2;
@@ -81,7 +81,7 @@ body {
   color: #ABD25E;
 }
 .thermometer--perfect strong:before {
-  content: " perfect";
+  content: " a fair amount";
 }
 .thermometer--perfect .liquid:before {
   background: #ABD25E;
@@ -91,7 +91,7 @@ body {
   color: #F8C830;
 }
 .thermometer--lukewarm strong:before {
-  content: " lukewarm";
+  content: " pretty jerky";
 }
 .thermometer--lukewarm .liquid:before {
   background: #F8C830;
@@ -101,7 +101,7 @@ body {
   color: #F1594A;
 }
 .thermometer--hot strong:before {
-  content: " too hot";
+  content: " total jerk";
 }
 .thermometer--hot .liquid:before {
   background: #F1594A;
