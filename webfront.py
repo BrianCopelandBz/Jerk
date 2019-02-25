@@ -9,13 +9,33 @@ app = Flask(__name__)
 thread = None
 thread_lock = Lock()
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
 @app.route('/')
 def home():
     with sqlite3.connect('jerk.db') as conn:
         cget = conn.cursor()
-        cget.execute("""SELECT jerktemp, datetime(sqltime, 'localtime') FROM jerk ORDER BY sqltime DESC LIMIT 1""")
+        cget.row_factory = dict_factory
+        cget.execute("""SELECT jerktemp, datetime(sqltime, 'localtime') as updatedt FROM jerk ORDER BY sqltime DESC LIMIT 25""")
         x = cget.fetchone()
-    return render_template('home.html', temp=x[0], update=x[1])
+        y = cget.fetchall()
+    return render_template('home.html', temp=x['jerktemp'], update=x['updatedt'], history=y)
+
+@app.route('/test')
+def test_site():
+    return render_template('test.html')
+
+@app.route('/test2')
+def test2_site():
+    return render_template('test2.html')
+
+@app.route('/test3')
+def test3_site():
+    return render_template('test3.html')
 
 @app.route('/[secret_jerk_url]')
 def test_switch():
