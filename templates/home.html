@@ -80,8 +80,8 @@
 
 <script>
 var height = $(window).height() / 3;
-var width = $(window).width()*10 / 8;
-var margin = ({top: 20, right: 30, bottom: 30, left: 100});
+var width = $(window).width()*8 / 10;
+var margin = ({top: 20, right: 30, bottom: 30, left: 120});
 
 var updates = {{ history | tojson | safe}};
 
@@ -89,11 +89,11 @@ var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var formatdate = d3.timeFormat("%H:%M");
 var toolTipFormat = d3.timeFormat("%m/%d %H:%M");
 
-//var temp_val = new Map([['too-cold', 1], ['cold', 2], ['perfect', 3], ['lukewarm', 4], ['hot', 5]]);
+var temp_val = new Map([['too-cold', 'not at all'], ['cold', 'a tiny bit'], ['perfect', 'a fair amount'], ['lukewarm', 'pretty jerky'], ['hot', 'total jerk']]);
 
 updates.forEach( function(element) {
   element.d3date = parseDate(element.updatedt);
-  //element.tempVal = temp_val.get(element.temp);
+  element.jerkVal = temp_val.get(element.jerktemp);
 });
 
 // domain of x axis is earliest latest timestamp
@@ -104,7 +104,7 @@ var xScale = d3.scaleTime()
   .range([0, width]);
 
 var yScale = d3.scaleOrdinal()
-  .domain(['too-cold', 'cold', 'perfect', 'lukewarm', 'hot'])
+  .domain(['not at all', 'a tiny bit', 'a fair amount', 'pretty jerky', 'total jerk'])
   //.domain(d3.extent(updates.map( element => element.tempVal ) ))
   .range([height - margin.bottom,
           height - margin.bottom - ((height - margin.bottom - margin.top) / 4),
@@ -116,7 +116,7 @@ var yScale = d3.scaleOrdinal()
 
 var line = d3.line()
   .x(function(d) { return xScale(d.d3date); })
-  .y(function(d) { return yScale(d.watertemp); })
+  .y(function(d) { return yScale(d.jerkVal); })
   .curve(d3.curveMonotoneX);
 
 var div = d3.select("body").append("div")
@@ -139,7 +139,6 @@ svg.append("g")
     .attr("class", "y axis")
     .call(d3.axisLeft(yScale)
          .ticks(5)
-
           ); // Create an axis component with d3.axisLeft
 
 // 9. Append the path, bind the data, and call the line generator
@@ -153,13 +152,13 @@ svg.selectAll(".dot")
   .enter().append("circle") // Uses the enter().append() method
     .attr("class", "dot") // Assign a class for styling
     .attr("cx", function(d) { return xScale(d.d3date) })
-    .attr("cy", function(d) { return yScale(d.watertemp) })
+    .attr("cy", function(d) { return yScale(d.jerVal) })
     .attr("r", 5)
     .on("mouseover", function(d) {
       div.transition()
         .duration(200)
         .style("opacity", .9);
-      div.html(toolTipFormat(d.d3date) + "<br/>" + d.watertemp)
+      div.html(toolTipFormat(d.d3date) + "<br/>" + d.jerkVal)
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
       })

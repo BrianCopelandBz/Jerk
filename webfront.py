@@ -20,7 +20,7 @@ def home():
     with sqlite3.connect('jerk.db') as conn:
         cget = conn.cursor()
         cget.row_factory = dict_factory
-        cget.execute("""SELECT jerktemp, datetime(sqltime, 'localtime') as updatedt FROM jerk ORDER BY sqltime DESC LIMIT 25""")
+        cget.execute("""SELECT jerktemp, datetime(sqltime, 'localtime') as updatedt FROM jerk ORDER BY sqltime DESC LIMIT 50""")
         x = cget.fetchone()
         y = cget.fetchall()
     return render_template('home.html', temp=x['jerktemp'], update=x['updatedt'], history=y)
