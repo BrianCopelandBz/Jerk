@@ -179,6 +179,17 @@ $(window).bind('resize', function(e)
 
 </script>
 
+<script>
+  d3.select("body").append("div")
+    .attr("class","bottom-summary")
+    .append("span")
+    .html("<br/>")
+    .append("span")
+    .text("{{today_updates}} updates in the last 24 hours, where Carl's jerk status has been {{today_temp_string}}.")
+    .append("span")
+    .text("{{total_updates}} total updates. Historically, Carl's jerk status was {{total_temp_string}}.")
+</script>
+
 <!--<script type=text/javascript>
   var perfis = ['too-cold', 'cold', 'perfect', 'lukewarm', 'hot'],
     el = $('div[class^=thermometer]'),
