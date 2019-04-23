@@ -67,6 +67,7 @@ div.tooltip {
   display: block;
 }
 
+
 .thermometer, .thermometer--too-cold, .thermometer--cold, .thermometer--perfect, .thermometer--lukewarm, .thermometer--hot {
   max-width: 80%;
   margin: 2rem auto;

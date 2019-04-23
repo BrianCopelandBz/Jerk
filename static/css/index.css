@@ -1,6 +1,7 @@
 /*
   https://developer.mozilla.org/en/docs/Web/CSS/box-shadow
   box-shadow: [inset?] [top] [left] [blur] [size] [color];
+
   Tips:
     - We're setting all the blurs to 0 since we want a solid fill.
     - Add the inset keyword so the box-shadow is on the inside of the element
@@ -11,6 +12,7 @@
 .fill:hover,
 .fill:focus {
   box-shadow: inset 0 0 0 2em var(--hover);
+
 }
 
 .pulse:hover,

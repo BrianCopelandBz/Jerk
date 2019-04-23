@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 from threading import Lock
 from werkzeug.serving import run_simple
+from datetime import datetime
 
 import sqlite3
 
@@ -17,6 +18,7 @@ def dict_factory(cursor, row):
 
 def average_temp(temp_score):
     if temp_score <= 1.3:
+
         return "mostly not a jerk"
     elif temp_score > 1.3 and temp_score <= 1.7:
         return "between not a jerk and a tiny bit of a jerk"
@@ -36,6 +38,8 @@ def average_temp(temp_score):
         return "mostly a total jerk"
     else:
         return "broken"
+
+
 
 @app.route('/')
 def home():
@@ -58,6 +62,7 @@ def home():
         today_temp_string =  average_temp(today_agg['score'] / today_agg['theCount'])
     return render_template('home.html',
         temp=x[0]['jerktemp'],
+
         update=current_update_dt,
         history=x,
         total_updates=total_updates,
@@ -65,6 +70,7 @@ def home():
         today_updates=today_updates,
         today_temp_string=today_temp_string
         )
+
 
 @app.route('/test')
 def test_site():
@@ -78,6 +84,7 @@ def test2_site():
 def test3_site():
     return render_template('test3.html')
 
+
 @app.route('/[secret_jerk_url]')
 def test_switch():
     return render_template('index.html')
@@ -86,8 +93,9 @@ def test_switch():
 def new_too_cold():
     with sqlite3.connect('jerktemp.db') as conn:
         cput = conn.cursor()
-        cput.execute("INSERT INTO jerk (sqltime, jerktemp) VALUES (CURRENT_TIMESTAMP, ?)", ("too-cold",))
 
+        cput.execute("INSERT INTO jerk (sqltime, jerktemp) VALUES (CURRENT_TIMESTAMP, ?)", ("too-cold",))
+        cput.close()
     return jsonify(result="updated to too cold")
 
 @app.route('/_new_cold')
@@ -95,7 +103,7 @@ def new_cold():
     with sqlite3.connect('jerktemp.db') as conn:
         cput = conn.cursor()
         cput.execute("INSERT INTO jerk (sqltime, jerktemp) VALUES (CURRENT_TIMESTAMP, ?)", ("cold",))
-
+        cput.close()
     return jsonify(result="updated to cold")
 
 
@@ -104,6 +112,7 @@ def new_perfect():
     with sqlite3.connect('jerktemp.db') as conn:
         cput = conn.cursor()
         cput.execute("INSERT INTO jerk (sqltime, jerktemp) VALUES (CURRENT_TIMESTAMP, ?)", ("perfect",))
+
     return jsonify(result="updated to perfect")
 
 
@@ -112,7 +121,7 @@ def new_lukewarm():
     with sqlite3.connect('jerktemp.db') as conn:
         cput = conn.cursor()
         cput.execute("INSERT INTO jerk (sqltime, jerktemp) VALUES (CURRENT_TIMESTAMP, ?)", ("lukewarm",))
-
+        cput.close()
     return jsonify(result="updated to lukewarm")
 
 @app.route('/_new_hot')
@@ -120,7 +129,7 @@ def new_hot():
     with sqlite3.connect('jerktemp.db') as conn:
         cput = conn.cursor()
         cput.execute("INSERT INTO jerk (sqltime, jerktemp) VALUES (CURRENT_TIMESTAMP, ?)", ("hot",))
-
+        cput.close()
     return jsonify(result="updated to hot")
 
 application = app
