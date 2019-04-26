@@ -3,6 +3,41 @@
 <head>
   <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/index.css') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{{ url_for('static', filename='dragdealer.0.9.8.min.js') }}"></script>
+  <style>
+
+  /**
+   * Dragdealer.js 0.9.8
+   * http://github.com/skidding/dragdealer
+   *
+   * (c) 2010+ Ovidiu Cherecheș
+   * http://skidding.mit-license.org
+   */
+
+  .dragdealer {
+    position: relative;
+    height: 30px;
+    background: #EEE;
+  }
+  .dragdealer .handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+  }
+  .dragdealer .red-bar {
+    width: 100px;
+    height: 30px;
+    background: #CC0000;
+    color: #FFF;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+  }
+  .dragdealer .disabled {
+    background: #898989;
+  }
+</style>
 </head>
 <body>
 
@@ -16,10 +51,18 @@
   <button onclick="clickFunction('hot')" class="up">Hot</button>
   <button class="slide">Text Brian</button>
   <!--<button class="offset">Slider</button>-->
+  <!--
   <div class="slidecontainer">
     <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
   </div>
-  <p align="right">...this slider does nothing</p>
+  -->
+  <div id="simple-slider" class="dragdealer">
+    <div class="handle red-bar" style="perspective: 1000px; backface-visibility: hidden; transform: translateX(295px);">
+      <span class="value">0</span>
+    </div>
+  </div>
+  <p align="right">...this slider is in beta, does not submit temp yet.</p>
+  <h2><a href="http://jerk.copeland.bz/">To the dashboard</a></h2>
 </center>
 </div>
 
@@ -39,6 +82,26 @@
       });
       return false;
     };
+</script>
+
+<script>
+function tempMap(v) {
+  if (v == 0) {return "Not At All";}
+  else if (v == 25) {return "Tiny Bit"}
+  else if (v == 50) {return "A Fair Amount";}
+  else if (v == 75) {return "Pretty Jerky";}
+  else if (v == 100) {return "Total Jerk";}
+  else {return "calibrating...";}
+};
+
+$(function() {
+  new Dragdealer('simple-slider', {
+    steps: 5,
+    animationCallback: function(x, y) {
+      $('#simple-slider .value').text(tempMap((Math.round(x * 100))))
+    }
+  });
+});
 </script>
 
 </body>
